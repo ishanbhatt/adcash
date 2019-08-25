@@ -4,9 +4,11 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 /**
  * Created by Ishan on 24/08/19.
@@ -23,13 +25,17 @@ public class MyResource {
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String getIt() {
-        List<Integer> a = new ArrayList<>();
-        a.add(5);
-        a.add(7);
-        a.add(9);
-        a.add(10);
+        Connection conn;
+        String url = "jdbc:sqlite:C:\\Users\\SONY\\Desktop\\Adcash\\Adcash";
 
-        Integer integer = a.stream().max(Integer::compareTo).get();
-        return "Got it!" +integer;
+        try {
+            Class.forName("org.sqlite.JDBC");
+            conn = DriverManager.getConnection(url);
+            return "Got it!"+ conn;
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println("EXCEPTIO IS "+e.getMessage());
+        }
+
+        return "NOTHING FOUND";
     }
 }
