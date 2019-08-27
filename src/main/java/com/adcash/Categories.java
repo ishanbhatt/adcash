@@ -3,9 +3,7 @@ package com.adcash;
 import com.DAO.CategoryDAO;
 import com.models.Category;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
 
@@ -32,6 +30,8 @@ public class Categories {
         String accept = httpHeaders.getHeaderString("Accept");
 
         List<Category> categories = categoryDAO.getAllCategories();
+        // Below logic is applied to get different response for XML and Json, it's just POC
+        // It won't be done for any other endpoint
         GenericEntity list = null;
         if(accept.toLowerCase().contains("json")) {
             List<String> stringList = categories.stream().map(Category::getName).collect(Collectors.toList());
@@ -39,6 +39,17 @@ public class Categories {
         }
         else list = new GenericEntity<List<Category>>(categories){};
         return Response.ok(list).build();
+    }
+
+    @GET
+    @Path("{id}")
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public Response getCategoryById(@PathParam("id") Integer id) throws SQLException{
+
+        Category category = categoryDAO.getCategory(id);
+        if(category == null)
+            return Response.status(Response.Status.NOT_FOUND).build();
+        return Response.ok(category).build();
     }
 
 }

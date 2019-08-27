@@ -48,6 +48,25 @@ public class ProductDAO {
             throw new SQLException(e.getCause());
         }
         return productList;
+    }
 
+    public Product getProduct(int productId) throws SQLException {
+        Product product = null;
+        String sql = "SELECT name, description, price, category from products where id = ?";
+        try (Connection conn = ConnectionPool.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)
+        ) {
+            pstmt.setInt(1, productId);
+
+            ResultSet rs = pstmt.executeQuery();
+            while(rs.next()) {
+                product = new Product(
+                        rs.getString(1), rs.getString(2),
+                        rs.getDouble(3), rs.getInt(4));
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            throw new SQLException(e.getCause());
+        }
+        return product;
     }
 }

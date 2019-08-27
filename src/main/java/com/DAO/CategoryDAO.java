@@ -26,7 +26,7 @@ public class CategoryDAO {
     }
 
     public Category getCategory(int categoryid) throws SQLException {
-        Category Category = null;
+        Category category = null;
         String sql = "select name from Categories where id = ?";
         try (Connection conn = ConnectionPool.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)
@@ -35,12 +35,12 @@ public class CategoryDAO {
 
             ResultSet rs = pstmt.executeQuery();
             while(rs.next()) {
-                Category = new Category(rs.getString("name"));
+                category = new Category(rs.getString("name"));
             }
         } catch (ClassNotFoundException | SQLException e) {
             throw new SQLException(e.getCause());
         }
-        return Category;
+        return category;
     }
 
 }

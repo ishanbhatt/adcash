@@ -16,7 +16,7 @@ public class Product {
     @XmlElement
     private int category;
 
-    public Product() {}
+    public Product() {}  // This is required for JAXB stuff
 
     public Product(String name, String description, double price, int category) {
         this.name = name;

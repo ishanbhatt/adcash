@@ -4,12 +4,13 @@ import com.dbconnpool.ConnectionPool;
 import com.models.User;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserDAO {
 
     public List<User> getAllUsers() throws SQLException {
-        List<User> userList = null;
+        List<User> userList = new ArrayList<>();
         String sql = "select name from users";
         try (Connection conn = ConnectionPool.getConnection();
              Statement stmt  = conn.createStatement();

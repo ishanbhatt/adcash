@@ -4,6 +4,7 @@
 *.iws
 .idea
 out
+classes/
 
 ### Maven ###
 target/
