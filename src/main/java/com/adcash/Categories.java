@@ -3,6 +3,7 @@ package com.adcash;
 import com.DAO.CategoryDAO;
 import com.models.Category;
 
+import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
@@ -48,8 +49,22 @@ public class Categories {
 
         Category category = categoryDAO.getCategory(id);
         if(category == null)
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.status(Response.Status.NOT_FOUND).entity("Category Not Found").build();
         return Response.ok(category).build();
+    }
+
+    @POST
+    @Path("/add")
+    public Response addCategory(@Valid Category category) throws SQLException {
+        int updateStatus;
+        if(category == null)
+            return Response.status(Response.Status.BAD_REQUEST).entity("CATEGORY TO BE ADDED CAN NOT BE NULL").build();
+        else
+             updateStatus = categoryDAO.addCategory(category);
+            if (updateStatus == 1)
+                return Response.ok(Response.Status.CREATED).entity("CATEGORY ADDED").build();
+
+        return Response.status(Response.Status.EXPECTATION_FAILED).build();
     }
 
 }

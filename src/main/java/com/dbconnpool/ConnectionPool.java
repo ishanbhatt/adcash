@@ -11,6 +11,7 @@ public class ConnectionPool {
 
     static {
         ds.setUrl("jdbc:sqlite:/tmp/Adcash");
+        ds.setDefaultAutoCommit(false);
         ds.setMinIdle(5);
         ds.setMaxIdle(10);
         ds.setMaxOpenPreparedStatements(100);

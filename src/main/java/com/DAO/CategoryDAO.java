@@ -43,4 +43,21 @@ public class CategoryDAO {
         return category;
     }
 
+    public int addCategory(Category category) throws SQLException {
+        String sql = "insert into categories (name) values (?)";
+        try (Connection conn = ConnectionPool.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)
+        ) {
+            pstmt.setString(1, category.getName());
+            int updateStatus = pstmt.executeUpdate();
+            pstmt.close();
+            if (updateStatus == 1) {
+                conn.commit();
+                return updateStatus;
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            throw new SQLException(e.getMessage());
+        }
+        return 0;
+    }
 }
