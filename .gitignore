@@ -24,3 +24,5 @@ buildNumber.properties
 *.ear
 *.db
 
+# Compiled class file #
+*.class
